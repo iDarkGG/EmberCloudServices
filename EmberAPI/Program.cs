@@ -16,13 +16,16 @@ public class Program
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddHttpClient();
+        builder.Logging.ClearProviders();
+        builder.Logging.AddConsole();
         builder.Services.AddSwaggerGen();
         builder.Services.AddAutoMapper(typeof(Mapper));
         builder.Services.AddDbContext<MainContext>(options =>
-            {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("conn"));
-            }
+                options.UseSqlServer(builder.Configuration.GetConnectionString("Conn"))
         );
+        builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+        Console.WriteLine(builder.Configuration.GetConnectionString("Conn"));
         builder.Services.AddSingleton<DataBaseSizeBgService>();
         builder.Services.AddHostedService<BackgroundService>(provider => provider.GetRequiredService<DataBaseSizeBgService>());
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Hosting;
@@ -9,14 +10,17 @@ namespace EmberAPI.BackgroundServices;
 
 public class DataBaseSizeBgService : BackgroundService
 {
-    private static readonly IConfiguration _configuration;
+    private static IConfiguration _configuration;
+    private readonly HttpClient _httpClient;
     private readonly ILogger<DataBaseSizeBgService> _logger;
     private readonly string? connString;
 
-    public DataBaseSizeBgService(ILogger<DataBaseSizeBgService> logger)
+    public DataBaseSizeBgService(ILogger<DataBaseSizeBgService> logger, HttpClient httpClient, IConfiguration configuration)
     {
         _logger = logger;
-        connString  = _configuration.GetConnectionString("conn");
+        _configuration = configuration;
+        connString = _configuration.GetConnectionString("Conn");
+        _httpClient = httpClient;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -28,16 +32,17 @@ public class DataBaseSizeBgService : BackgroundService
             _logger.LogInformation("DataBaseSizeBGService is running. at {Time}", DateTimeOffset.Now);
             
             //Code
-            var dbSize = await GetDbSizeAsync();
+            var dbSize = Convert.ToDouble(await GetDbSizeAsync())/1000000;
+            _logger.LogInformation("Test: MEGABYTES {dbSize}", dbSize);
             
-            await Task.Delay(TimeSpan.FromMinutes(10), stoppingToken);
+            await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
     
         }
         _logger.LogInformation("DataBaseSizeBGService is stopping.");
     }
-    private async Task<Decimal> GetDbSizeAsync()
+    private async Task<int> GetDbSizeAsync()
     {
-        decimal dbSize = 0;
+        int dbSize = 0;
         try
         {
             using (SqlConnection connection = new SqlConnection(connString))
@@ -45,7 +50,7 @@ public class DataBaseSizeBgService : BackgroundService
                 await connection.OpenAsync();
                 using (SqlCommand command = new SqlCommand("SELECT SUM(size) * 8 * 1024 FROM sys.master_files WHERE type = 0;", connection))
                 {
-                    dbSize = (decimal)await command.ExecuteScalarAsync();
+                    dbSize = (int) await command.ExecuteScalarAsync();
                 }
             }
             _logger.LogInformation("Database size retrieved successfully: {0} bytes", dbSize);
@@ -56,4 +61,18 @@ public class DataBaseSizeBgService : BackgroundService
         }
         return dbSize;
     }
+
+    // private async Task SendPayload(double dbSize)
+    // {
+    //     _logger.LogInformation("Sending payload to database: {dbSize}", dbSize);
+    //
+    //     var payload = new
+    //     {
+    //         DbSize = dbSize,
+    //         Timestamp = DateTime.UtcNow
+    //     };
+    //     
+    //     var jsonContent = await JsonSerializer.SerializeAsync(payload);
+    //     
+    // }
 }
