@@ -1,3 +1,8 @@
+using AutoMapper;
+using EmberAPI.BackgroundServices;
+using EmberAPI.Context;
+using Microsoft.EntityFrameworkCore;
+
 namespace EmberAPI;
 
 public class Program
@@ -12,6 +17,14 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        builder.Services.AddAutoMapper(typeof(Mapper));
+        builder.Services.AddDbContext<MainContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("conn"));
+            }
+        );
+        builder.Services.AddSingleton<DataBaseSizeBgService>();
+        builder.Services.AddHostedService<BackgroundService>(provider => provider.GetRequiredService<DataBaseSizeBgService>());
 
         var app = builder.Build();
 
