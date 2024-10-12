@@ -1,6 +1,8 @@
 using AutoMapper;
+using EmberAPI.APIMapper;
 using EmberAPI.BackgroundServices;
 using EmberAPI.Context;
+using EmberAPI.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmberAPI;
@@ -20,15 +22,14 @@ public class Program
         builder.Logging.ClearProviders();
         builder.Logging.AddConsole();
         builder.Services.AddSwaggerGen();
-        builder.Services.AddAutoMapper(typeof(Mapper));
+        builder.Services.AddAutoMapper(typeof(ApiMapper));
+        builder.Services.AddScoped<IClientRepository, ClientRepository>();
         builder.Services.AddDbContext<MainContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Conn"))
         );
         builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
-        Console.WriteLine(builder.Configuration.GetConnectionString("Conn"));
-        builder.Services.AddSingleton<DataBaseSizeBgService>();
-        builder.Services.AddHostedService<BackgroundService>(provider => provider.GetRequiredService<DataBaseSizeBgService>());
-
+        builder.Services.AddSingleton<DbSizeBGService>();
+        builder.Services.AddHostedService<BackgroundService>(provider => provider.GetRequiredService<DbSizeBGService>());
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -38,7 +39,7 @@ public class Program
             app.UseSwaggerUI();
         }
 
-        app.UseHttpsRedirection();
+        //app.UseHttpsRedirection();
 
         app.UseAuthorization();
 

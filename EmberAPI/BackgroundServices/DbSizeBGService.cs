@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
@@ -8,19 +9,21 @@ using Microsoft.Extensions.Configuration;
 
 namespace EmberAPI.BackgroundServices;
 
-public class DataBaseSizeBgService : BackgroundService
+public class DbSizeBGService : BackgroundService
 {
     private static IConfiguration _configuration;
     private readonly HttpClient _httpClient;
-    private readonly ILogger<DataBaseSizeBgService> _logger;
+    private readonly ILogger<DbSizeBGService> _logger;
     private readonly string? connString;
+    private string _apiEndpoint;
 
-    public DataBaseSizeBgService(ILogger<DataBaseSizeBgService> logger, HttpClient httpClient, IConfiguration configuration)
+    public DbSizeBGService(ILogger<DbSizeBGService> logger, HttpClient httpClient, IConfiguration configuration)
     {
         _logger = logger;
         _configuration = configuration;
         connString = _configuration.GetConnectionString("Conn");
         _httpClient = httpClient;
+        _apiEndpoint = "http://localhost:5290/EmberAPI/Services";
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -34,8 +37,10 @@ public class DataBaseSizeBgService : BackgroundService
             //Code
             var dbSize = Convert.ToDouble(await GetDbSizeAsync())/1000000;
             _logger.LogInformation("Test: MEGABYTES {dbSize}", dbSize);
+
+            await SendPayload(dbSize);
             
-            await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+            await Task.Delay(TimeSpan.FromMinutes(10), stoppingToken);
     
         }
         _logger.LogInformation("DataBaseSizeBGService is stopping.");
@@ -62,17 +67,27 @@ public class DataBaseSizeBgService : BackgroundService
         return dbSize;
     }
 
-    // private async Task SendPayload(double dbSize)
-    // {
-    //     _logger.LogInformation("Sending payload to database: {dbSize}", dbSize);
-    //
-    //     var payload = new
-    //     {
-    //         DbSize = dbSize,
-    //         Timestamp = DateTime.UtcNow
-    //     };
-    //     
-    //     var jsonContent = await JsonSerializer.SerializeAsync(payload);
-    //     
-    // }
+    private async Task SendPayload(double dbSize)
+    {
+        _logger.LogInformation("Sending payload to database: {dbSize}", dbSize);
+    
+        var payload = new
+        {
+            DataBaseSize = dbSize,
+            Timestamp = DateTime.UtcNow
+        };
+        
+        var jsonContent = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
+        try
+        {
+            var response = await _httpClient.PostAsync(_apiEndpoint, jsonContent);
+            response.EnsureSuccessStatusCode();
+            _logger.LogInformation("Payload sent to database: {dbSize}", dbSize);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error sending payload to database: {dbSize}", dbSize);
+        }
+        
+    }
 }
