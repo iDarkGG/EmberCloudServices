@@ -27,6 +27,7 @@ public class Program
         builder.Services.AddDbContext<MainContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Conn"))
         );
+        builder.Services.AddControllers().AddNewtonsoftJson();
         builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
         builder.Services.AddSingleton<DbSizeBGService>();
         builder.Services.AddHostedService<BackgroundService>(provider => provider.GetRequiredService<DbSizeBGService>());

@@ -14,16 +14,16 @@ public class DbSizeBGService : BackgroundService
     private static IConfiguration _configuration;
     private readonly HttpClient _httpClient;
     private readonly ILogger<DbSizeBGService> _logger;
-    private readonly string? connString;
-    private string _apiEndpoint;
+    private readonly string? _connString;
+    private readonly string? _apiEndpoint;
 
     public DbSizeBGService(ILogger<DbSizeBGService> logger, HttpClient httpClient, IConfiguration configuration)
     {
         _logger = logger;
         _configuration = configuration;
-        connString = _configuration.GetConnectionString("Conn");
+        _connString = _configuration.GetConnectionString("Conn");
         _httpClient = httpClient;
-        _apiEndpoint = "http://localhost:5290/EmberAPI/Services";
+        _apiEndpoint = _configuration.GetConnectionString("ServicesEndpoint");
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -50,7 +50,7 @@ public class DbSizeBGService : BackgroundService
         int dbSize = 0;
         try
         {
-            using (SqlConnection connection = new SqlConnection(connString))
+            using (SqlConnection connection = new SqlConnection(_connString))
             {
                 await connection.OpenAsync();
                 using (SqlCommand command = new SqlCommand("SELECT SUM(size) * 8 * 1024 FROM sys.master_files WHERE type = 0;", connection))
