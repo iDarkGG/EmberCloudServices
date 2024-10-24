@@ -1,4 +1,4 @@
-﻿using EmberAPI.Context;
+﻿using EmberAPI.APIContext;
 using EmberAPI.Models;
 using Microsoft.EntityFrameworkCore;
 

@@ -24,5 +24,5 @@ public partial class DataCenter
     public string? Location { get; set; }
 
     [InverseProperty("DataCenter")]
-    public virtual ICollection<Cluster> Clusters { get; set; } = new List<Cluster>();
+    public virtual ICollection<Instance> Instances { get; set; } = new List<Instance>();
 }

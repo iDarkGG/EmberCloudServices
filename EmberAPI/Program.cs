@@ -1,7 +1,7 @@
 using AutoMapper;
+using EmberAPI.APIContext;
 using EmberAPI.APIMapper;
 using EmberAPI.BackgroundServices;
-using EmberAPI.Context;
 using EmberAPI.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,6 +24,7 @@ public class Program
         builder.Services.AddSwaggerGen();
         builder.Services.AddAutoMapper(typeof(ApiMapper));
         builder.Services.AddScoped<IClientRepository, ClientRepository>();
+        builder.Services.AddScoped<IInstanceRepository, InstanceRepository>();
         builder.Services.AddDbContext<MainContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Conn"))
         );

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace EmberAPI.Models;
 
 [Table("Employee")]
-public partial class  Employee
+public partial class Employee
 {
     [Key]
     public int EmployeeID { get; set; }

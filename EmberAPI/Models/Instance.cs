@@ -6,11 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EmberAPI.Models;
 
-[Table("Cluster")]
-public partial class Cluster
+[Table("Instance")]
+[Index("InstanceName", Name = "UQ__Instance__132AFCD8C2B46CF6", IsUnique = true)]
+public partial class Instance
 {
     [Key]
-    public int ClusterID { get; set; }
+    public int InstanceID { get; set; }
 
     public int? ClientID { get; set; }
 
@@ -19,15 +20,15 @@ public partial class Cluster
     public string? DataCenterID { get; set; }
 
     [StringLength(50)]
-    public string? ClusterName { get; set; }
+    public string? InstanceName { get; set; }
 
     public DateOnly CreationDate { get; set; }
 
     [ForeignKey("ClientID")]
-    [InverseProperty("Clusters")]
+    [InverseProperty("Instances")]
     public virtual Client? Client { get; set; }
 
     [ForeignKey("DataCenterID")]
-    [InverseProperty("Clusters")]
+    [InverseProperty("Instances")]
     public virtual DataCenter? DataCenter { get; set; }
 }

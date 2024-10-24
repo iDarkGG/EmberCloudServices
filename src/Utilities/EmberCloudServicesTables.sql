@@ -23,14 +23,14 @@ create table DataCenter(
     Location nvarchar(100)
 );
 
-create table Cluster(
-    ClusterID int primary key identity (1,1),
-    ClientID int,
-    DataCenterID varchar(3),
-    ClusterName nvarchar(50),
-    CreationDate Date not null,
-    foreign key (ClientID) references Client(ClientID),
-    foreign key (DataCenterID) references DataCenter(DataCenterID)
+create table Instance(
+     InstanceID int primary key identity (1,1),
+     ClientID int,
+     DataCenterID varchar(3),
+     InstanceName nvarchar(50) unique,
+     CreationDate Date not null,
+     foreign key (ClientID) references Client(ClientID),
+     foreign key (DataCenterID) references DataCenter(DataCenterID)
 );
 
 create table DBRoles(

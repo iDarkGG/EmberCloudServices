@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="11cfee0b-a648-40ad-91bf-b5c953ee4eea" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Controllers/InstanceController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Repositories/ClusterRepository.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Repositories/IClusterRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/sqldialects.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ConsoleTest/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../ConsoleTest/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Context/MainContext.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/ServicesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/ServicesController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dtos/ClusterDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Dtos/ClusterDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EmberAPI.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/EmberAPI.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Client.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Cluster.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/CreatedUser.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/DBRole.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/DataCenter.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Employee.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Factura.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/FacturaDetalle.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/PaymentInfo.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Ticket.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/TicketDetail.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Repositories/Repository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Repositories/Repository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EmberCloudServices.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/../EmberCloudServices.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/SqlInstance.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../src/SqlInstance.cs" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 3
+}]]></component>
+  <component name="ProjectId" id="2nrlJhLLBbhxlYE9XuX9k7P7mOz" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-WS-242.23339.15" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="11cfee0b-a648-40ad-91bf-b5c953ee4eea" name="Changes" comment="" />
+      <created>1729739006672</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1729739006672</updated>
+      <workItem from="1729739008051" duration="5000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using EmberAPI.Context;
+using EmberAPI.APIContext;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmberAPI.Repositories;
@@ -9,6 +9,7 @@ public class Repository<T> : IRepository<T> where T : class
     private readonly MainContext _context;
     private readonly DbSet<T> _tabla;
 
+    
     public Repository(MainContext context)
     {
         _context = context;

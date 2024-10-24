@@ -9,8 +9,8 @@ class Program
     {
         SqlInstance db = new SqlInstance();
         
-        //db.SqlInstanceCreate("test","yes");
+        //db.SqlInstanceCreate("testinstancia", "testpassword");
         
-        db.SqlInstanceDrop("test");
+        db.SqlInstanceDrop("testinstancia");
     }
 }

@@ -20,5 +20,5 @@ public partial class Client
     public DateOnly CreationDate { get; set; }
 
     [InverseProperty("Client")]
-    public virtual ICollection<Cluster> Clusters { get; set; } = new List<Cluster>();
+    public virtual ICollection<Instance> Instances { get; set; } = new List<Instance>();
 }

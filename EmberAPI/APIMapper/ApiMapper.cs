@@ -9,7 +9,7 @@ public class ApiMapper : Profile
     public ApiMapper()
     {
         CreateMap<Client, ClientDto>().ReverseMap();
-        CreateMap<Cluster, ClusterDto>().ReverseMap();
+        CreateMap<Instance, InstanceDto>().ReverseMap();
         CreateMap<CreatedUser, CreatedUserDto>().ReverseMap();
         CreateMap<DataCenter, DataCenterDto>().ReverseMap();
         CreateMap<DBRole, DBRoleDto>().ReverseMap();

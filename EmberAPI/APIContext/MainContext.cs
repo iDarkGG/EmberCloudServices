@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using EmberAPI.Models;
+﻿using EmberAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace EmberAPI.Context;
+namespace EmberAPI.APIContext;
 
 public partial class MainContext : DbContext
 {
@@ -13,8 +11,6 @@ public partial class MainContext : DbContext
     }
 
     public virtual DbSet<Client> Clients { get; set; }
-
-    public virtual DbSet<Cluster> Clusters { get; set; }
 
     public virtual DbSet<CreatedUser> CreatedUsers { get; set; }
 
@@ -27,6 +23,8 @@ public partial class MainContext : DbContext
     public virtual DbSet<Factura> Facturas { get; set; }
 
     public virtual DbSet<FacturaDetalle> FacturaDetalles { get; set; }
+
+    public virtual DbSet<Instance> Instances { get; set; }
 
     public virtual DbSet<PaymentInfo> PaymentInfos { get; set; }
 
@@ -42,15 +40,6 @@ public partial class MainContext : DbContext
 
             entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.Status).HasDefaultValue(true);
-        });
-
-        modelBuilder.Entity<Cluster>(entity =>
-        {
-            entity.HasKey(e => e.ClusterID).HasName("PK__Cluster__919BFE93EF750913");
-
-            entity.HasOne(d => d.Client).WithMany(p => p.Clusters).HasConstraintName("FK__Cluster__ClientI__3F466844");
-
-            entity.HasOne(d => d.DataCenter).WithMany(p => p.Clusters).HasConstraintName("FK__Cluster__DataCen__403A8C7D");
         });
 
         modelBuilder.Entity<CreatedUser>(entity =>
@@ -87,6 +76,15 @@ public partial class MainContext : DbContext
         modelBuilder.Entity<FacturaDetalle>(entity =>
         {
             entity.HasKey(e => e.FacturaDetalleID).HasName("PK__FacturaD__A9674B1AA87E2214");
+        });
+
+        modelBuilder.Entity<Instance>(entity =>
+        {
+            entity.HasKey(e => e.InstanceID).HasName("PK__Instance__5C51996F3DE92C7D");
+
+            entity.HasOne(d => d.Client).WithMany(p => p.Instances).HasConstraintName("FK__Instance__Client__70DDC3D8");
+
+            entity.HasOne(d => d.DataCenter).WithMany(p => p.Instances).HasConstraintName("FK__Instance__DataCe__71D1E811");
         });
 
         modelBuilder.Entity<PaymentInfo>(entity =>
