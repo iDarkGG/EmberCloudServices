@@ -1,6 +1,4 @@
 ﻿
-using EmberAPI.Models;
-
 namespace EmberAPI.Dtos;
 
 public class InstanceDto

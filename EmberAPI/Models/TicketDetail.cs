@@ -16,12 +16,21 @@ public partial class TicketDetail
 
     public DateOnly MsgDate { get; set; }
 
-    public int? sentBy { get; set; }
+    public int? EmployeeID { get; set; }
 
-    [InverseProperty("TicketDetails")]
-    public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
+    public int? ClientID { get; set; }
 
-    [ForeignKey("sentBy")]
+    public int TicketID { get; set; }
+
+    [ForeignKey("ClientID")]
     [InverseProperty("TicketDetails")]
-    public virtual Employee? sentByNavigation { get; set; }
+    public virtual Client? Client { get; set; }
+
+    [ForeignKey("EmployeeID")]
+    [InverseProperty("TicketDetails")]
+    public virtual Employee? Employee { get; set; }
+
+    [ForeignKey("TicketID")]
+    [InverseProperty("TicketDetails")]
+    public virtual Ticket Ticket { get; set; } = null!;
 }

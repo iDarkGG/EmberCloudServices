@@ -22,13 +22,10 @@ public partial class Ticket
 
     public int? AssignedTo { get; set; }
 
-    public int? TicketDetailsID { get; set; }
-
     [ForeignKey("AssignedTo")]
     [InverseProperty("Tickets")]
     public virtual Employee? AssignedToNavigation { get; set; }
 
-    [ForeignKey("TicketDetailsID")]
-    [InverseProperty("Tickets")]
-    public virtual TicketDetail? TicketDetails { get; set; }
+    [InverseProperty("Ticket")]
+    public virtual ICollection<TicketDetail> TicketDetails { get; set; } = new List<TicketDetail>();
 }

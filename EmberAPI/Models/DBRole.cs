@@ -11,7 +11,7 @@ public partial class DBRole
     [Key]
     public int DBRolesID { get; set; }
 
-    [StringLength(10)]
+    [StringLength(50)]
     [Unicode(false)]
     public string RoleName { get; set; } = null!;
 

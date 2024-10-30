@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace EmberAPI.Models;
 
 [Table("Instance")]
-[Index("InstanceName", Name = "UQ__Instance__132AFCD8C2B46CF6", IsUnique = true)]
+[Index("InstanceName", Name = "UQ__Instance__132AFCD8651AA162", IsUnique = true)]
 public partial class Instance
 {
     [Key]
@@ -27,6 +27,9 @@ public partial class Instance
     [ForeignKey("ClientID")]
     [InverseProperty("Instances")]
     public virtual Client? Client { get; set; }
+
+    [InverseProperty("Instance")]
+    public virtual ICollection<CreatedUser> CreatedUsers { get; set; } = new List<CreatedUser>();
 
     [ForeignKey("DataCenterID")]
     [InverseProperty("Instances")]

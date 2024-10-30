@@ -11,6 +11,6 @@ class Program
         
         //db.SqlInstanceCreate("testinstancia", "testpassword");
         
-        db.SqlInstanceDrop("testinstancia");
+        db.SqlInstanceDrop("instanciapedorra");
     }
 }

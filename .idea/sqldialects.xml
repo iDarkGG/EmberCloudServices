@@ -2,6 +2,9 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/f450ecd3-69a0-47c9-97fe-a29a1d08b07f/console_1.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Utilities/EmberCloudServicesTables.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Utilities/Fill_DB_Ember.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/src/Utilities/SQLQuerys.sql" dialect="TSQL" />
     <file url="PROJECT" dialect="TSQL" />
   </component>
 </project>

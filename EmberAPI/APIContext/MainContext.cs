@@ -1,4 +1,6 @@
-﻿using EmberAPI.Models;
+﻿using System;
+using System.Collections.Generic;
+using EmberAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmberAPI.APIContext;
@@ -36,7 +38,7 @@ public partial class MainContext : DbContext
     {
         modelBuilder.Entity<Client>(entity =>
         {
-            entity.HasKey(e => e.ClientID).HasName("PK__Client__E67E1A041E7F2ADF");
+            entity.HasKey(e => e.ClientID).HasName("PK__Client__E67E1A042AF465EB");
 
             entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.Status).HasDefaultValue(true);
@@ -44,72 +46,80 @@ public partial class MainContext : DbContext
 
         modelBuilder.Entity<CreatedUser>(entity =>
         {
-            entity.HasKey(e => e.CreatedUsersID).HasName("PK__CreatedU__6A20F8E288A8D556");
+            entity.HasKey(e => e.CreatedUsersID).HasName("PK__CreatedU__6A20F8E223EE0C7F");
 
-            entity.HasOne(d => d.DBRoles).WithMany(p => p.CreatedUsers).HasConstraintName("FK__CreatedUs__DBRol__45F365D3");
+            entity.HasOne(d => d.DBRoles).WithMany(p => p.CreatedUsers).HasConstraintName("FK__CreatedUs__DBRol__47DBAE45");
+
+            entity.HasOne(d => d.Instance).WithMany(p => p.CreatedUsers).HasConstraintName("FK__CreatedUs__Insta__46E78A0C");
         });
 
         modelBuilder.Entity<DBRole>(entity =>
         {
-            entity.HasKey(e => e.DBRolesID).HasName("PK__DBRoles__333880DE5A668433");
+            entity.HasKey(e => e.DBRolesID).HasName("PK__DBRoles__333880DEA8E61F1C");
         });
 
         modelBuilder.Entity<DataCenter>(entity =>
         {
-            entity.HasKey(e => e.DataCenterID).HasName("PK__DataCent__9E4870084BC03D8D");
+            entity.HasKey(e => e.DataCenterID).HasName("PK__DataCent__9E487008D19DAFCB");
         });
 
         modelBuilder.Entity<Employee>(entity =>
         {
-            entity.HasKey(e => e.EmployeeID).HasName("PK__Employee__7AD04FF16F09C503");
+            entity.HasKey(e => e.EmployeeID).HasName("PK__Employee__7AD04FF1456BA782");
         });
 
         modelBuilder.Entity<Factura>(entity =>
         {
-            entity.HasKey(e => e.FacturaID).HasName("PK__Factura__5C024805222315D5");
+            entity.HasKey(e => e.FacturaID).HasName("PK__Factura__5C0248055F73FFA5");
 
             entity.Property(e => e.FacturaID).ValueGeneratedNever();
 
-            entity.HasOne(d => d.FacturaDetalle).WithMany(p => p.Facturas).HasConstraintName("FK__Factura__Factura__534D60F1");
+            entity.HasOne(d => d.Client).WithMany(p => p.Facturas).HasConstraintName("FK__Factura__ClientI__6FE99F9F");
+
+            entity.HasOne(d => d.FacturaDetalle).WithMany(p => p.Facturas).HasConstraintName("FK__Factura__Factura__70DDC3D8");
         });
 
         modelBuilder.Entity<FacturaDetalle>(entity =>
         {
-            entity.HasKey(e => e.FacturaDetalleID).HasName("PK__FacturaD__A9674B1AA87E2214");
+            entity.HasKey(e => e.FacturaDetalleID).HasName("PK__FacturaD__A9674B1AD206DFA0");
         });
 
         modelBuilder.Entity<Instance>(entity =>
         {
-            entity.HasKey(e => e.InstanceID).HasName("PK__Instance__5C51996F3DE92C7D");
+            entity.HasKey(e => e.InstanceID).HasName("PK__Instance__5C51996F5F57385A");
 
-            entity.HasOne(d => d.Client).WithMany(p => p.Instances).HasConstraintName("FK__Instance__Client__70DDC3D8");
+            entity.HasOne(d => d.Client).WithMany(p => p.Instances).HasConstraintName("FK__Instance__Client__403A8C7D");
 
-            entity.HasOne(d => d.DataCenter).WithMany(p => p.Instances).HasConstraintName("FK__Instance__DataCe__71D1E811");
+            entity.HasOne(d => d.DataCenter).WithMany(p => p.Instances).HasConstraintName("FK__Instance__DataCe__412EB0B6");
         });
 
         modelBuilder.Entity<PaymentInfo>(entity =>
         {
-            entity.HasOne(d => d.Client).WithMany().HasConstraintName("FK__PaymentIn__Clien__47DBAE45");
+            entity.HasOne(d => d.Client).WithMany().HasConstraintName("FK__PaymentIn__Clien__49C3F6B7");
         });
 
         modelBuilder.Entity<Ticket>(entity =>
         {
-            entity.HasKey(e => e.ticketID).HasName("PK__Ticket__3333C6703F230ABC");
+            entity.HasKey(e => e.ticketID).HasName("PK__Ticket__3333C6702C4B651A");
 
             entity.Property(e => e.ticketCreationDate).HasDefaultValueSql("(getdate())");
 
-            entity.HasOne(d => d.AssignedToNavigation).WithMany(p => p.Tickets).HasConstraintName("FK__Ticket__Assigned__5EBF139D");
-
-            entity.HasOne(d => d.TicketDetails).WithMany(p => p.Tickets).HasConstraintName("FK__Ticket__TicketDe__5DCAEF64");
+            entity.HasOne(d => d.AssignedToNavigation).WithMany(p => p.Tickets).HasConstraintName("FK__Ticket__Assigned__66603565");
         });
 
         modelBuilder.Entity<TicketDetail>(entity =>
         {
-            entity.HasKey(e => e.TicketDetailsID).HasName("PK__TicketDe__01F22079FE8F96C6");
+            entity.HasKey(e => e.TicketDetailsID).HasName("PK__TicketDe__01F22079E56D9644");
 
             entity.Property(e => e.MsgDate).HasDefaultValueSql("(getdate())");
 
-            entity.HasOne(d => d.sentByNavigation).WithMany(p => p.TicketDetails).HasConstraintName("FK__TicketDet__sentB__59FA5E80");
+            entity.HasOne(d => d.Client).WithMany(p => p.TicketDetails).HasConstraintName("FK__TicketDet__Clien__7A672E12");
+
+            entity.HasOne(d => d.Employee).WithMany(p => p.TicketDetails).HasConstraintName("FK__TicketDet__Emplo__797309D9");
+
+            entity.HasOne(d => d.Ticket).WithMany(p => p.TicketDetails)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__TicketDet__Ticke__7B5B524B");
         });
 
         OnModelCreatingPartial(modelBuilder);

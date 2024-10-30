@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EmberAPI.Models;
 
-[Index("userNameHash", Name = "UQ__CreatedU__1F25CA80BD2CD418", IsUnique = true)]
+[Index("userNameHash", Name = "UQ__CreatedU__1F25CA80FDF0A620", IsUnique = true)]
 public partial class CreatedUser
 {
     [Key]
@@ -20,7 +20,13 @@ public partial class CreatedUser
 
     public int? DBRolesID { get; set; }
 
+    public int? InstanceID { get; set; }
+
     [ForeignKey("DBRolesID")]
     [InverseProperty("CreatedUsers")]
     public virtual DBRole? DBRoles { get; set; }
+
+    [ForeignKey("InstanceID")]
+    [InverseProperty("CreatedUsers")]
+    public virtual Instance? Instance { get; set; }
 }

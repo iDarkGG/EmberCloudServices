@@ -7,7 +7,7 @@ using Microsoft.SqlServer.Management.Common;
 
 public class SqlInstance
 {
-    public void SqlInstanceCreate(string nombreInstancia, string password)
+    public bool SqlInstanceCreate(string nombreInstancia, string password)
     {
         string instanceName = nombreInstancia;
 
@@ -30,10 +30,12 @@ public class SqlInstance
             }
 
             Console.WriteLine($"Instancia de SQL Server '{instanceName}' creada con éxito.");
+            return true;
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error al crear la instancia: {ex.Message}");
+            return false;
         }
         finally
         {
@@ -42,7 +44,10 @@ public class SqlInstance
             {
                 serverConnection.Disconnect();
             }
+
+            
         }
+        return true;
     }
 
     public void SqlInstanceDrop(string nombreInstancia)

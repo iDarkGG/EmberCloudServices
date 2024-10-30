@@ -6,4 +6,5 @@ public class CreatedUserDto
     public string userName { get; set; }
     public string userPassword { get; set; }
     public int? DBRolesId { get; set; }
+    public int? InstanceID { get; set; }
 }

@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-using EmberAPI.BackgroundServices;
-using EmberAPI.APIContext;
-using EmberAPI.Dtos;
+﻿using EmberAPI.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmberAPI.Controllers;

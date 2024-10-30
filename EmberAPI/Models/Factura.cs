@@ -20,6 +20,12 @@ public partial class Factura
 
     public int? FacturaDetalleID { get; set; }
 
+    public int? ClientID { get; set; }
+
+    [ForeignKey("ClientID")]
+    [InverseProperty("Facturas")]
+    public virtual Client? Client { get; set; }
+
     [ForeignKey("FacturaDetalleID")]
     [InverseProperty("Facturas")]
     public virtual FacturaDetalle? FacturaDetalle { get; set; }

@@ -20,7 +20,7 @@ public partial class Employee
     [Unicode(false)]
     public string? EmployeeRole { get; set; }
 
-    [InverseProperty("sentByNavigation")]
+    [InverseProperty("Employee")]
     public virtual ICollection<TicketDetail> TicketDetails { get; set; } = new List<TicketDetail>();
 
     [InverseProperty("AssignedToNavigation")]
