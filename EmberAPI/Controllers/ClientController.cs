@@ -39,7 +39,7 @@ public class ClientController : Controller
         return Ok(_mapper.Map<ClientDto>(user));
 
     }
-
+    
 
     [HttpPost("create-client")]
     public async Task<ActionResult> PostClient([FromBody] ClientDto client)

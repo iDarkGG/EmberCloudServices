@@ -47,10 +47,9 @@ public class SqlInstance
 
             
         }
-        return true;
     }
 
-    public void SqlInstanceDrop(string nombreInstancia)
+    public bool SqlInstanceDrop(string nombreInstancia)
     {
         string instanceName = nombreInstancia;
         
@@ -73,10 +72,12 @@ public class SqlInstance
             }
 
             Console.WriteLine($"Instancia de SQL Server '{instanceName}' Eliminada con éxito.");
+            return true;
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Error al eliminar la instancia: {ex.Message}");
+            return false;
         }
         finally
         {
@@ -89,7 +90,7 @@ public class SqlInstance
 
     public void AddUserToSqlInstance(string instanceName, string loginName, string password, string saPassword, string dbName = null)
 {
-    ServerConnection serverConnection = new ServerConnection("localhost", "sa", saPassword);
+    ServerConnection serverConnection = new ServerConnection("MSSQLSERVER", "sa", saPassword);
     Server server = new Server(serverConnection);
 
     try

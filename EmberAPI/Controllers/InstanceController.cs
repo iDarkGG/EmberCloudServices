@@ -44,17 +44,61 @@ public class InstanceController : Controller
         return Ok(_mapper.Map<IEnumerable<InstanceDto>>(instances));
             
     }
-
+    /*
+     * Por hacer:
+     * necesito que el front end pase los siguientes datos:
+     * -instancia actual
+     * -Data center actual
+     * - Cliente actual
+     */
     [HttpPost("CreateInstance")]
 
-    public async Task<ActionResult<InstanceDto>> CreateInstance(string nombre, string password, [FromBody] InstanceDto instanceDto)
+    public async Task<ActionResult<InstanceDto>> CreateInstance(string nombre, string password, int currentUserId)
     {
-        var client = await _clientRepository.GetAsync(x => x.ClientID == int.MaxValue);
-        
-        if(_sqlInstance.SqlInstanceCreate(nombre, password)) 
-           
+        var instance = new InstanceDto
+        {
+            InstanceName = nombre,
+            DatacenterID = "DC1",
+            ClientId = currentUserId,
+            CreationDate = DateOnly.FromDateTime(DateTime.UtcNow)
+        };
+
+        if (_sqlInstance.SqlInstanceCreate(nombre, password))
+        {
+            await _repository.Add(_mapper.Map<Instance>(instance));
             return Ok();
+        }
         else
+        {
             return BadRequest();
+        }
     }
+
+    [HttpDelete("DeleteInstance")]
+    public async Task<ActionResult<InstanceDto>> DropInstance([FromBody] InstanceDto instanceDto)
+    {
+        if (_sqlInstance.SqlInstanceDrop(instanceDto.InstanceName))
+        {
+            await _repository.Add(_mapper.Map<Instance>(instanceDto));
+            return Ok();
+        }
+        else
+        {
+            return BadRequest();
+        }
+    }
+
+    // [HttpPut("UpdateInstance")]
+    // public async Task<ActionResult<InstanceDto>> UpdateInstance([FromBody] InstanceDto instanceDto)
+    // {
+    //     
+    // }
+
+    // [HttpPost("AddUserToInstance")]
+    // public async Task<ActionResult<InstanceDto>> AddUserToInstance([FromBody] CreatedUserDto userDto, int instanceId)
+    // {
+    //     var instance = await _repository.GetAsync(x => x.InstanceID == instanceId);
+    //     return Ok(_mapper.Map<InstanceDto>(instance));
+    // }
+    //
 }
