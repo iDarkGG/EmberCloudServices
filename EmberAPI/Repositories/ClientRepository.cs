@@ -1,6 +1,5 @@
 ﻿using EmberAPI.APIContext;
 using EmberAPI.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace EmberAPI.Repositories;
 
