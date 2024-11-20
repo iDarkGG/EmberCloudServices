@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using System.Security.Cryptography;
  
 namespace EmberCloudServices
 {
-    public class HashCreator
+    public class StringHasher
     {
         private byte[] tmpStore;
         private byte[] hash;
@@ -17,7 +13,7 @@ namespace EmberCloudServices
  
         public  string FinalHash { get => finalhash; }
  
-        public bool EncryptPassword(string stringtohash)
+        public string EncryptString(string stringtohash)
         {
             tmpStore = Encoding.ASCII.GetBytes(stringtohash);
             sha256 = SHA256.Create();
@@ -28,8 +24,8 @@ namespace EmberCloudServices
                 sOutput.Append(hash[i].ToString("X2"));
             }
             finalhash = sOutput.ToString();
- 
-            return true;
+
+            return sOutput.ToString();  
         }
  
         public bool CompareHash(string hash1, string hash2)
