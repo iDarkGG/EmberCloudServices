@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EmberAPI.BackgroundServices;
 using EmberAPI.Dtos;
 using EmberAPI.Models;
 using EmberAPI.Repositories;
@@ -15,11 +16,16 @@ namespace EmberAPI.Controllers
         private StringHasher hasher = new StringHasher(); 
         private readonly ICreatedUserRepository _context;
         private readonly IMapper _mapper;
+        private UserPOSTService _userPostService;
 
-        public UserController(IMapper mapper, ICreatedUserRepository repository)
+
+        
+        [ActivatorUtilitiesConstructor]
+        public UserController(IMapper? mapper, ICreatedUserRepository? repository, UserPOSTService userPostService)
         {
             _mapper = mapper;
             this._context = repository;
+            _userPostService = userPostService;
         }
 
 
@@ -43,18 +49,10 @@ namespace EmberAPI.Controllers
 
         [HttpPost("create-user")]
 
-        public async Task<ActionResult> PostUser([FromBody] CreatedUserDto user)
+        public async Task<ActionResult> PostUser([FromBody] CreatedUserPOSTDto user)
         {
-            var searchUser = await _context.GetAsync(x => x.userNameHash == hasher.EncryptString(user.userNameHash));
-            if (searchUser is not null) return BadRequest();
-            
-            
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
-            if (user is null) return BadRequest();
-            user.userNameHash = hasher.EncryptString(user.userNameHash);
-            user.userPasswordHash = hasher.EncryptString(user.userPasswordHash);
-            return Ok(_context.Add(_mapper.Map<CreatedUser>(user)));
+            var result = await _userPostService.Post(user);
+            return result;
         }
 
         [HttpPatch("patch-user/{name}")]
@@ -89,12 +87,20 @@ namespace EmberAPI.Controllers
         [HttpDelete("delete-user/{name}")]
         public async Task<ActionResult> DeleteUser(string name)
         {
+            var username = hasher.EncryptString(name);
             if (string.IsNullOrWhiteSpace(name)) return BadRequest("User name is required.");
-            var userEntity = await _context.GetAsync(x => x.userNameHash == hasher.EncryptString(name));
+            var userEntity = await _context.GetAsync(x => x.userNameHash == username);
             if (userEntity is null) return NotFound($"User with name '{name}' not found.");
             
             await _context.DeleteAsync(userEntity);
             return Ok("User successfully deleted.");
+        }
+
+        [HttpDelete("delete-users-by-instanceid/{instanceid}")]
+        public async Task<ActionResult> DeleteUsersByInstanceId(int instanceid)
+        {
+            await _context.DeleteAllUserByInstanceId(instanceid);
+            return Ok("Users successfully deleted.");
         }
     }   
 }

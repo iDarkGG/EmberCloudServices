@@ -26,6 +26,7 @@ public class Program
         builder.Services.AddScoped<IClientRepository, ClientRepository>();
         builder.Services.AddScoped<IInstanceRepository, InstanceRepository>();
         builder.Services.AddScoped<ICreatedUserRepository, CreatedUserRepository>();
+        builder.Services.AddScoped<UserPOSTService>();
         builder.Services.AddDbContext<MainContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Conn"))
         );

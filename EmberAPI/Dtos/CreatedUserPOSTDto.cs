@@ -1,8 +1,7 @@
 ﻿namespace EmberAPI.Dtos;
 
-public class CreatedUserDto
+public class CreatedUserPOSTDto
 {
-    public int CreatedUsersID { get; set; }
     public string userNameHash { get; set; }
     public string userPasswordHash { get; set; }
     public int? DBRolesId { get; set; }

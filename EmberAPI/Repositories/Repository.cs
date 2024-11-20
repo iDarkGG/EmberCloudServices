@@ -19,6 +19,7 @@ public class Repository<T> : IRepository<T> where T : class
     public async Task Add(T obj)
     {
         await _context.AddAsync(obj);
+        await SaveChangesAsync();
     }
 
     public async Task<IEnumerable<T>> GetAllAsync(bool tracking = false)
@@ -29,7 +30,7 @@ public class Repository<T> : IRepository<T> where T : class
         return await query.ToListAsync();
     }
 
-    public Task<T> GetAsync(Expression<Func<T, bool>> expression, bool tracking = false)
+    public Task<T?> GetAsync(Expression<Func<T, bool>> expression, bool tracking = false)
     {
         var query = _tabla.AsQueryable();
         if (tracking) query.AsNoTracking();

@@ -26,7 +26,7 @@ public class SqlUserManager
         return username;
     }
 
-    public bool AddUserToSqlInstance(string username, string password, string role)
+    public bool AddUserToSqlInstance(string username, string password)
     {
         using (var connection = new SqlConnection(_connectionString))
         {
@@ -40,12 +40,12 @@ public class SqlUserManager
                     createLoginCommand.ExecuteNonQuery();
                 }
                 
-                string createUserQuery = $"CREATE USER [{username}] FOR LOGIN [{username}];";
-                using (var createUserCommand = new SqlCommand(createUserQuery, connection))
-                {
-                    createUserCommand.Parameters.AddWithValue("@username", username);
-                    createUserCommand.ExecuteNonQuery();
-                }
+                // string createUserQuery = $"CREATE USER [{username}] FOR LOGIN [{username}];";
+                // using (var createUserCommand = new SqlCommand(createUserQuery, connection))
+                // {
+                //     createUserCommand.Parameters.AddWithValue("@username", username);
+                //     createUserCommand.ExecuteNonQuery();
+                // }
                 // string grantRoleQuery = "ALTER ROLE @role ADD MEMBER @username;";
                 // using (var grantRoleCommand = new SqlCommand(grantRoleQuery, connection))
                 // {

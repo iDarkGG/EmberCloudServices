@@ -42,14 +42,13 @@ public class ClientController : Controller
     
 
     [HttpPost("create-client")]
-    public async Task<ActionResult> PostClient([FromBody] ClientDto client)
+    public async Task<ActionResult> PostClient([FromBody] ClientPOSTDto client)
     {
-        var searchClient = await _context.GetAsync(x => x.ClientName.ToUpper() == client.ClientName.ToUpper());
+        var searchClient = await _context.GetAsync(x => x.ClientName == client.ClientName);
         if (searchClient is not null) return BadRequest();
 
-        if (!ModelState.IsValid) return BadRequest(ModelState);
-
         if (client is null) return BadRequest();
+        
         await _context.Add(_mapper.Map<Client>(client));
         return Ok();
     }

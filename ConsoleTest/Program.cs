@@ -15,7 +15,7 @@ class Program
         //Recuerda que "testinstancia tiene que ser reemplazado por la instancia que a la cual el cliente quiera agregar el user
         //De momento solo se agrega login y user
         SqlUserManager user = new SqlUserManager("Server=localhost\\testinstancia;Database=master;User Id=sa;Password=testpassword;");
-        user.AddUserToSqlInstance("testuser", "testpassword", null);
+        user.AddUserToSqlInstance("testuser", "testpassword");
         //db.SqlInstanceDrop("testinstancia");
         //db.AddUserToSqlInstance("TestInstancia", "TestUser", "12345678","123456789");
     }

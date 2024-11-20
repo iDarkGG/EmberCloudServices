@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EmberAPI.BackgroundServices;
 using EmberAPI.Dtos;
 using EmberAPI.Models;
 using EmberAPI.Repositories;
@@ -12,14 +13,19 @@ namespace EmberAPI.Controllers;
 public class InstanceController : Controller
 {
     private readonly IInstanceRepository _repository;
-    private readonly IClientRepository _clientRepository;
+    private readonly ICreatedUserRepository _createdUserRepository;
     private readonly IMapper _mapper;
     private SqlInstance _sqlInstance = new SqlInstance();
+    private UserPOSTService _userPostService;
+    
 
-    public InstanceController(IInstanceRepository repository, IMapper mapper)
+    public InstanceController(IInstanceRepository repository, IMapper mapper, UserPOSTService userPostService, ICreatedUserRepository createdUserRepository)
     {
         this._repository = repository;
         _mapper = mapper;
+        _userPostService = userPostService;
+        _createdUserRepository = createdUserRepository;
+   
     }
 
     [HttpGet("ListInstances")]
@@ -51,7 +57,7 @@ public class InstanceController : Controller
      * -Data center actual
      * - Cliente actual
      */
-    [HttpPost("CreateInstance")]
+    [HttpPost("create-instance")]
 
     public async Task<ActionResult<InstanceDto>> CreateInstance(string nombre, string password, int currentUserId)
     {
@@ -66,7 +72,7 @@ public class InstanceController : Controller
         if (_sqlInstance.SqlInstanceCreate(nombre, password))
         {
             await _repository.Add(_mapper.Map<Instance>(instance));
-            return Ok();
+            return Ok("Success");
         }
         else
         {
@@ -74,12 +80,15 @@ public class InstanceController : Controller
         }
     }
 
-    [HttpDelete("DeleteInstance")]
-    public async Task<ActionResult<InstanceDto>> DropInstance([FromBody] InstanceDto instanceDto)
-    {
-        if (_sqlInstance.SqlInstanceDrop(instanceDto.InstanceName))
+    [HttpDelete("delete-instance")]
+    public async Task<ActionResult<InstanceDto>> DropInstance(string instanceName)
+    { 
+        var instance = await _repository.GetAsync(x => x.InstanceName == instanceName);
+        var result = await _createdUserRepository.GetAllUsersByInstanceIDAsync(instance.InstanceID);
+        if(result.Any()) return BadRequest("Hay usuarios registrados en esta instancia, si decia borrarla, elimine los usuarios primero");
+        await _repository.DeleteAsync(_mapper.Map<Instance>(instance));
+        if (_sqlInstance.SqlInstanceDrop(instanceName))
         {
-            await _repository.Add(_mapper.Map<Instance>(instanceDto));
             return Ok();
         }
         else
@@ -94,11 +103,32 @@ public class InstanceController : Controller
     //     
     // }
 
-    // [HttpPost("AddUserToInstance")]
-    // public async Task<ActionResult<InstanceDto>> AddUserToInstance([FromBody] CreatedUserDto userDto, int instanceId)
-    // {
-    //     var instance = await _repository.GetAsync(x => x.InstanceID == instanceId);
-    //     return Ok(_mapper.Map<InstanceDto>(instance));
-    // }
-    //
+    [HttpPost("add-user-to-instance")]
+    public async Task<ActionResult> AddUserToInstance([FromBody] CreatedUserPOSTDto userDto, int instanceId, string saPassword)
+    {
+        
+        var instance = await _repository.GetAsync(x => x.InstanceID == instanceId);
+        SqlUserManager _newUser = new SqlUserManager($"Server=localhost\\{instance.InstanceName.ToUpper()};Database=master;User Id=sa;Password={saPassword};");
+        if (instance is null) return BadRequest("Instance not found");
+        else
+        {
+            if (userDto is null) return BadRequest("Invalid User");
+            else
+            {
+                if (_newUser.AddUserToSqlInstance(userDto.userNameHash, userDto.userPasswordHash))
+                {
+                    var result = await _userPostService.Post(userDto);
+                    return result;
+
+                }
+                else
+                {
+                    return BadRequest("Error");
+                }
+
+            }
+        }
+        
+    }
+    
 }
