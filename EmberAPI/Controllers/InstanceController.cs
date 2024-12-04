@@ -4,6 +4,7 @@ using EmberAPI.Dtos;
 using EmberAPI.Models;
 using EmberAPI.Repositories;
 using EmberCloudServices;
+using EmberCloudServices.Utilities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmberAPI.Controllers;
@@ -16,7 +17,10 @@ public class InstanceController : Controller
     private readonly ICreatedUserRepository _createdUserRepository;
     private readonly IMapper _mapper;
     private SqlInstance _sqlInstance = new SqlInstance();
+    private StringHasher _hasher = new StringHasher();
     private UserPOSTService _userPostService;
+    private DbSchema _dbSchema = new DbSchema();
+    private DbTreeQuery _dbTreeQuery;
     
 
     public InstanceController(IInstanceRepository repository, IMapper mapper, UserPOSTService userPostService, ICreatedUserRepository createdUserRepository)
@@ -25,7 +29,6 @@ public class InstanceController : Controller
         _mapper = mapper;
         _userPostService = userPostService;
         _createdUserRepository = createdUserRepository;
-   
     }
 
     [HttpGet("ListInstances")]
@@ -50,6 +53,17 @@ public class InstanceController : Controller
         return Ok(_mapper.Map<IEnumerable<InstanceDto>>(instances));
             
     }
+
+    [HttpGet("GetAllDatabases")]
+    public async Task<IEnumerable<DbSchema>> GetAllDatabases(int InstanceId, string saPassword)
+    {
+        var instance = await _repository.GetAsync(x => x.InstanceID == InstanceId);
+        _dbTreeQuery = new DbTreeQuery($"Server=localhost\\{instance.InstanceName.ToUpper()};Database=master;User Id=sa;Password={saPassword};TrustServerCertificate=True;");
+        _dbTreeQuery.QueryAllDatabases();
+        return await DbSchema.GetAllDbsAsync();
+    }
+    
+    
     /*
      * Por hacer:
      * necesito que el front end pase los siguientes datos:
@@ -85,7 +99,7 @@ public class InstanceController : Controller
     { 
         var instance = await _repository.GetAsync(x => x.InstanceName == instanceName);
         var result = await _createdUserRepository.GetAllUsersByInstanceIDAsync(instance.InstanceID);
-        if(result.Any()) return BadRequest("Hay usuarios registrados en esta instancia, si decia borrarla, elimine los usuarios primero");
+        if(result.Any()) return BadRequest("Hay usuarios registrados en esta instancia, si desea borrarla, elimine los usuarios primero");
         await _repository.DeleteAsync(_mapper.Map<Instance>(instance));
         if (_sqlInstance.SqlInstanceDrop(instanceName))
         {

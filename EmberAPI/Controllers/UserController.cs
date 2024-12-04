@@ -42,6 +42,7 @@ namespace EmberAPI.Controllers
         {
             if (username == null) return BadRequest();
             var result = await _context.GetAsync(x => x.userNameHash == hasher.EncryptString(username));
+            
             if (result is null) return NotFound();
 
             return Ok(_mapper.Map<CreatedUserDto>(result));

@@ -1,5 +1,6 @@
 ﻿using EmberAPI.APIContext;
 using EmberAPI.Models;
+using EmberCloudServices.Utilities;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmberAPI.Repositories;
@@ -17,4 +18,6 @@ public class InstanceRepository: Repository<Instance>, IInstanceRepository
     {
         return await _context.Instances.Where(i => i.ClientID == clientId).ToListAsync();
     }
+
+
 }

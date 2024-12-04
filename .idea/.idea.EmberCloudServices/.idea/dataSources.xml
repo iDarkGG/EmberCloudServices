@@ -8,5 +8,13 @@
       <jdbc-url>Server=localhost\MSSQLSERVER,1433</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="master@localhost" uuid="9021f5d7-295d-44f4-9914-061238dd48a6">
+      <driver-ref>sqlserver.jb</driver-ref>
+      <synchronize>true</synchronize>
+      <configured-by-url>true</configured-by-url>
+      <jdbc-driver>com.jetbrains.jdbc.sqlserver.SqlServerDriver</jdbc-driver>
+      <jdbc-url>Server=localhost\TESTINSTANCIA;Database=master;User Id=sa;Password=12345678;TrustServerCertificate=True;MultipleActiveResultSets=True;</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

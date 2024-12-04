@@ -46,7 +46,7 @@ public class SqlUserManager
                 //     createUserCommand.Parameters.AddWithValue("@username", username);
                 //     createUserCommand.ExecuteNonQuery();
                 // }
-                // string grantRoleQuery = "ALTER ROLE @role ADD MEMBER @username;";
+                 string grantRoleQuery = "ALTER ROLE @role ADD MEMBER @username;";
                 // using (var grantRoleCommand = new SqlCommand(grantRoleQuery, connection))
                 // {
                 //     grantRoleCommand.Parameters.AddWithValue("@role", role);
