@@ -22,7 +22,6 @@ public class InstanceController : Controller
     private DbSchema _dbSchema = new DbSchema();
     private DbTreeQuery _dbTreeQuery;
     
-
     public InstanceController(IInstanceRepository repository, IMapper mapper, UserPOSTService userPostService, ICreatedUserRepository createdUserRepository)
     {
         this._repository = repository;
@@ -63,14 +62,6 @@ public class InstanceController : Controller
         return await DbSchema.GetAllDbsAsync();
     }
     
-    
-    /*
-     * Por hacer:
-     * necesito que el front end pase los siguientes datos:
-     * -instancia actual
-     * -Data center actual
-     * - Cliente actual
-     */
     [HttpPost("create-instance")]
 
     public async Task<ActionResult<InstanceDto>> CreateInstance(string nombre, string password, int currentUserId)
@@ -120,9 +111,8 @@ public class InstanceController : Controller
     [HttpPost("add-user-to-instance")]
     public async Task<ActionResult> AddUserToInstance([FromBody] CreatedUserPOSTDto userDto, int instanceId, string saPassword)
     {
-        
         var instance = await _repository.GetAsync(x => x.InstanceID == instanceId);
-        SqlUserManager _newUser = new SqlUserManager($"Server=localhost\\{instance.InstanceName.ToUpper()};Database=master;User Id=sa;Password={saPassword};");
+        SqlUserManager _newUser = new SqlUserManager($"Server=localhost\\{instance.InstanceName.ToUpper()};Database=master;User Id=sa;Password={saPassword};TrustServerCertificate=True;");
         if (instance is null) return BadRequest("Instance not found");
         else
         {
@@ -142,7 +132,16 @@ public class InstanceController : Controller
 
             }
         }
-        
+    }
+
+    //Este metodo no hace ningun check al Query ya que asume que esta ingresado correctamente
+    [HttpGet("ExecQuery")]
+    public async Task<ActionResult> ExecQuery(string query, int instanceId, string saPassword)
+    {
+        var instance = await _repository.GetAsync(x => x.InstanceID == instanceId);
+        QueryExec queryExec = new QueryExec($"Server=localhost\\{instance.InstanceName.ToUpper()};Database=master;User Id=sa;Password={saPassword};TrustServerCertificate=True;");
+        await queryExec.Execute(query);
+        return Ok();
     }
     
 }

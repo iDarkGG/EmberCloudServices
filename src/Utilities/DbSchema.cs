@@ -6,17 +6,7 @@ public class DbSchema
 {
     private static List<DbSchema> List = new List<DbSchema>();
     private TableSchema Tb = new TableSchema();
-
-    // public DbSchema()
-    // {
-    //     
-    // }
-    // public DbSchema(string dbName, List<TableSchema> tables) : this()
-    // {
-    //     DbName = dbName;
-    //     Tables = tables;
-    // }
-
+    
     public string DbName { get; set; }
     public List<TableSchema> Tables { get; set; }
 

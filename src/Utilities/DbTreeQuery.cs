@@ -17,7 +17,6 @@ public class DbTreeQuery
 
     public bool QueryAllDatabases()
     {
-        
         using (var connection = new SqlConnection(_connString))
         {
             try
@@ -49,7 +48,6 @@ public class DbTreeQuery
     }
     public void QueryDatabaseObjects(string connectionString, string databaseName)
     {
-        // Modify the connection string to specify the database
         string dbConnectionString = connectionString.Replace("master", databaseName);
 
         try
