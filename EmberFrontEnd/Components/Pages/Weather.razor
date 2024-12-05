@@ -41,7 +41,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await Http.GetFromJsonAsync<List<ClientDto>>("EmberAPI/Client");
+        var response = await Http.GetFromJsonAsync<List<ClientDto>>("localhost:5290/EmberAPI/Client");
         if (response is null)
 
         clients = response;
